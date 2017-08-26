@@ -486,11 +486,39 @@ public class AddressBook {
         final ArrayList<String[]> matchedPersons = new ArrayList<>();
         for (String[] person : getAllPersonsInAddressBook()) {
             final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
-            if (!Collections.disjoint(wordsInName, keywords)) {
+
+
+            //sets with all lower case words
+            Set<String> wordsInNameInLowerCase=getSetWithAllLowerCaseWords(wordsInName);
+            Set<String> keywordsInLowerCase=getSetWithAllLowerCaseWords(keywords);
+
+            if (!Collections.disjoint(wordsInNameInLowerCase, keywordsInLowerCase)) {
                 matchedPersons.add(person);
             }
         }
         return matchedPersons;
+    }
+
+
+
+    /**
+     * Returns a set with all words in lower case to make search non case-sensetive
+     *
+     * @param originalSet which has original words in normal format
+     * @return convertedSet which has all words in lower case
+     */
+    private static Set<String> getSetWithAllLowerCaseWords(Collection<String> originalSet){
+
+        Set<String> convertedSet=new HashSet<>();
+
+        for(String str : originalSet){
+
+            String convertedToLowerCase=str.toLowerCase();
+            convertedSet.add(convertedToLowerCase);
+        }
+
+
+        return convertedSet;
     }
 
     /**
